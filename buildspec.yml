@@ -11,23 +11,23 @@ phases:
     runtime-versions:
       python: 3.7
     commands:
-      - echo "install phase: start"
+      - echo installing...
       - aws --version
-      - echo "install phase: end"
+      - echo installed
   pre_build:
     commands:
-      - echo "pre_build phase: start"
+      - echo pre_building...
       - aws configure set default.region $AWS_DEFAULT_REGION
       - aws cloudformation validate-template --template-body file://./cfn/vpc.yaml
-      - echo "pre_build phase: end"
+      - echo pre_builded
   build:
     commands:
-      - echo "build phase: start"
-      - echo "build phase: end"
+      - echo building...
+      - echo builded
   post_build:
     commands:
-      - echo "post_build phase: start"
-      - echo "post_build phase: end"
+      - echo post_building...
+      - echo post_builded
 artifacts:
   files:
     - "**/*"
