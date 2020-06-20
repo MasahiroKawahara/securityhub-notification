@@ -1,0 +1,52 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: ap-northeast-1   
+
+phases:
+  # install:
+  #   インストール時に CodeBuild が実行するコマンドがある場合は、そのコマンドを表します。
+  #   install フェーズは、ビルド環境でのパッケージのインストールにのみ使用することをお勧めします。
+  install:
+    runtime-versions:
+      runtime: python: 3.7
+    commands:
+      - echo "install phase: start"
+      - aws --version
+      - echo "install phase: end"
+  # pre_build:
+  #   ビルドの前に CodeBuild が実行するコマンドがあれば、それを表します。
+  #   たとえば、このフェーズを使用して Amazon ECR にサインインするか、
+  #   npm の依存関係をインストールすることができます。
+  pre_build:
+    commands:
+      - echo "pre_build phase: start"
+      - aws configure set default.region $AWS_DEFAULT_REGION
+      - aws cloudformation validate-template --template-body file://./cfn/vpc.yaml
+      - echo "pre_build phase: end"
+  # build:
+  #   ビルド中に CodeBuild が実行するコマンドがあれば、それを表します。
+  #   たとえば、このフェーズを使用して、Mocha、RSpec、または sbt を実行できます。
+  build:
+    commands:
+      - echo "build phase: start"
+      - echo "build phase: end"
+  # post_build:
+  #   ビルドの後に CodeBuild が実行するコマンドがあれば、それを表します。
+  #   たとえば、Maven を使用してビルドアーティファクトを JAR または WAR ファイルにパッケージ化するか、
+  #   Docker イメージを Amazon ECR にプッシュすることができます。
+  #   次に、Amazon SNS を介してビルド通知を送信できます。
+  post_build:
+    commands:
+      - echo "post_build phase: start"
+      - echo "post_build phase: end"
+# artifacts:
+#   CodeBuild がビルド出力を見つけることができる場所に関する情報、
+#   CodeBuild が S3 出力バケットへのアップロード用にその出力を準備する方法に関する情報を表します。
+#   たとえば、Docker イメージを作成して Amazon ECR にプッシュしている場合、
+#   または、ソースコードでユニットテストを実行していてもビルドしていない場合、このシーケンスは必要ありません。
+artifacts:
+  files:
+    - "**/*"
+  name: myname-$AWS_DEFAULT_REGION
