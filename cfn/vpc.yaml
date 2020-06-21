@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: test
+Description: test vpc
 Resources:
   Vpc:
     Type: AWS::EC2::VPC
